@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Linktree Paloma</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://kit.fontawesome.com/your-fontawesome-kit.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .topbar {
+        width: 75%;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+      }
+
+      .toggle-wrapper {
+        display: flex;
+        background-color: #8c8888;
+        border-radius: 50px;
+        overflow: hidden;
+        max-width: 175px;
+        margin: 0 auto;
+        padding: 1px;
+      }
+
+      .toggle-btn {
+        flex: 1;
+        padding: 12px 0;
+        font-weight: bold;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+        border-radius: 50px;
+        font-size: 16px;
+        background-color: transparent;
+        color: white;
+      }
+
+      .toggle-btn.active {
+        background-color: white;
+        color: black;
+      }
+
+      .slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        background-color: white;
+        border-radius: 50px;
+        transition: transform 0.3s ease;
+        z-index: 0;
+      }
+
+      .toggle-wrapper .toggle-btn {
+        position: relative;
+        z-index: 1;
+      }
+
+      .button-ellipse {
+        background-color: rgb(140, 136, 136);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+
+      .button-ellipse img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .bg-custom {
+        background-color: #e7d9ce;
+        font-family: "Karla", sans-serif;
+      }
+
+      .profile img {
+        max-width: 20%;
+      }
+
+      .icon {
+        font-size: 24px;
+        color: #5b352b;
+        margin: 0 10px;
+        text-decoration: none;
+      }
+
+      .btn {
+        font-weight: bold;
+        width: 120px;
+      }
+
+      .active-tab {
+        border: 2px solid #5b352b;
+      }
+
+      .shop-section {
+        background-color: #751d1d;
+        text-align: center;
+        align-items: center;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center; /* Pusatkan gambar */
+        flex-wrap: wrap; /* Agar gambar turun ke bawah jika tidak muat */
+        overflow: hidden; /* Mencegah gambar keluar dari container */
+        max-width: 100%; /* Pastikan container tidak terlalu lebar */
+      }
+
+      .product-img {
+        border-radius: 15px;
+        max-width: 32%; /* Batasi ukuran gambar */
+        width: 100%;
+        height: auto; /* Jaga aspek rasio */
+        object-fit: cover; /* Pastikan gambar tidak terdistorsi */
+      }
+
+      p {
+        color: #5b352b;
+        font-size: 16px;
+      }
+
+      .carousel iframe {
+        border-radius: 15px;
+      }
+      .carousel-control-prev-icon,
+      .carousel-control-next-icon {
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+      }
+
+      .social-buttons .btn {
+        background-color: #751d1d;
+        color: white;
+        border-radius: 30px;
+        padding: 20px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: transform 0.2s, background-color 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .social-buttons .btn:hover {
+        background-color: #5b352b;
+        transform: scale(1.05);
+      }
+
+      .follow-linktree .btn {
+        background-color: #ffffff;
+        color: rgb(0, 0, 0);
+        border-radius: 30px;
+        padding: 10px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: transform 0.2s, background-color 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .container {
+        max-width: 600px; /* atau 720px, sesuai kebutuhan */
+        margin: 0 auto; /* biar selalu di tengah */
+        padding: 50px 20px 0;
+      }
+
+      .thin-text {
+        font-weight: 5;
+        font-size: 0.7rem;
+        color: #c9aaaa;
+      }
+
+      .title {
+        text-align: center;
+        color: #660f0f;
+        margin: 20px 0;
+      }
+
+      .carousel-container {
+        padding: 20px;
+        overflow: hidden;
+      }
+
+      .carousel {
+        display: flex;
+        gap: 16px;
+        transition: transform 0.5s ease;
+      }
+
+      .card {
+        background: #660f0f;
+        border-radius: 32px;
+        padding: 20px;
+        width: 180px;
+        min-width: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        position: relative;
+      }
+
+      .items {
+        display: flex;
+        gap: 8px;
+      }
+
+      .items img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #fff;
+      }
+
+      .next-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        color: #660f0f;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      .next-btn:hover {
+        background: #f2f2f2;
+      }
+
+      /* Container */
+      .shoppable-carousel-container {
+        position: relative;
+        padding: 20px; /* lebih kecil dari sebelumnya */
+        overflow: hidden;
+        max-width: 1200px; /* bisa disesuaikan */
+        margin: auto;
+      }
+
+      .affiliate-note {
+        text-align: center;
+        font-size: 12px;
+        font-weight: normal;
+      }
+
+      /* text shoppable */
+      .shopSection p{
+        text-align: center;
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+
+      /* Carousel */
+      .shoppable-carousel {
+        display: flex;
+        gap: 16px; /* jarak antar card dikurangi */
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding-bottom: 8px;
+
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE & Edge lama */
+      }
+
+      .shoppable-carousel::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Card */
+      .shoppable-card {
+        background-color: #6a1212;
+        border-radius: 20px;
+        padding: 12px;
+        width: 140px; 
+        height: 210px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        flex-shrink: 0;
+        text-align: center;
+        box-sizing: border-box;
+      }
+
+      /* Small Items */
+      .shoppable-items {
+        margin-top: 150px;
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .shoppable-items img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid #935656;
+        cursor: pointer;
+      }
+
+      /* Navigation Buttons */
+      .shoppable-prev-btn,
+      .shoppable-next-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: white;
+        color: #660f0f;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 2;
+      }
+
+      .shoppable-prev-btn {
+        left: 0;
+        width: 40px;
+        height: 40px;
+      }
+
+      .shoppable-next-btn {
+        right: 0;
+        width: 40px;
+        height: 40px;
+      }
+    </style>
+
+
+  </head>
+  <body class="bg-custom">
+    <div class="topbar">
+      <div class="button-ellipse">
+        <img src="./image/ellipsis-solid.svg" />
+      </div>
+    </div>
+
+    <div class="container text-center">
+      <!-- Foto Profil -->
+      <div class="profile p-5">
+        <img
+          src="./image/profile2.jpg"
+          alt="Paloma"
+          class="rounded-circle mb-2"
+        />
+        <h5 class="fw-semi-bold p-2">Paloma</h5>
+        <!-- Ikon Sosial Media -->
+        <div class="social-icons my-3">
+          <a href="#" class="icon"><i class="bi bi-tiktok"></i></a>
+          <a href="#" class="icon"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="icon"><i class="bi bi-youtube"></i></a>
+          <a href="#" class="icon"><i class="bi bi-envelope"></i></a>
+        </div>
+      </div>
+
+      <!-- Tombol Links & Shop -->
+      <div class="toggle-wrapper mb-3 position-relative">
+        <div class="slider"></div>
+        <button id="btnLinks" class="toggle-btn active">Links</button>
+        <button id="btnShop" class="toggle-btn">Shop</button>
+      </div>
+
+      <div id="linksSection">
+        <!-- Produk -->
+        <div class="shop-section p-3 rounded-5">
+          <div class="d-flex justify-content-between">
+            <img
+              src="./image/product1.jpg"
+              alt="Product 1"
+              class="img-fluid product-img"
+            />
+            <img
+              src="./image/product2.jpg"
+              alt="Product 2"
+              class="img-fluid product-img"
+            />
+            <img
+              src="./image/product3.jpg"
+              alt="Product 3"
+              class="img-fluid product-img"
+            />
+          </div>
+          <p class="mt-2 text-white">
+            See Full Shop <br /><small class="thin-text">70 Products</small>
+          </p>
+        </div>
+
+        <!-- Youtube -->
+        <div class="mt-4">
+          <p class="fw-bold">subscribe to my Youtube❤️</p>
+          <!-- Carousel YouTube Section -->
+          <div
+            id="youtubeCarousel"
+            class="carousel slide mt-4"
+            data-bs-ride="carousel"
+          >
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <iframe
+                  width="100%"
+                  height="315"
+                  src="https://www.youtube.com/embed/NAM31ZaIu5c"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <div class="carousel-item">
+                <iframe
+                  width="100%"
+                  height="315"
+                  src="https://www.youtube.com/embed/sH12IHZeT8M"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <div class="carousel-item">
+                <iframe
+                  width="100%"
+                  height="315"
+                  src="https://www.youtube.com/embed/lYwqCk0QEgU"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <div class="carousel-item">
+                <iframe
+                  width="100%"
+                  height="315"
+                  src="https://www.youtube.com/embed/levozATCt1E"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <div class="carousel-item">
+                <iframe
+                  width="100%"
+                  height="315"
+                  src="https://www.youtube.com/embed/3s12fJVbuwk"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+
+            <!-- Tombol Navigasi -->
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#youtubeCarousel"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#youtubeCarousel"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+            </button>
+          </div>
+        </div>
+        <!--Follow Social Media-->
+        <div class="mt-4">
+          <p class="fw-bold">Follow my social media</p>
+        </div>
+        <!--Media Social-->
+        <div class="d-grid gap-3 w-100 social-buttons">
+          <a href="https://youtube.com" class="btn w-100">
+            <i class="bi bi-youtube"></i> YouTube
+          </a>
+          <a href="https://instagram.com" class="btn w-100">
+            <i class="bi bi-instagram"></i> Instagram
+          </a>
+          <a href="https://tiktok.com" class="btn w-100">
+            <i class="bi bi-tiktok"></i> TikTok
+          </a>
+          <a href="#" class="btn w-100">
+            <i class="bi bi-shop"></i> Join Linktree Shops - PALOMASHOPS
+          </a>
+          <a href="mailto:contact@example.com" class="btn w-100">
+            <i class="bi bi-envelope"></i> Inquiries
+          </a>
+        </div>
+        <!--Bergabung di Linktree-->
+        <div class="mt-4 mb-5 d-flex justify-content-center follow-linktree">
+          <a href="mailto:contact@example.com" class="btn w-75">
+            <i class="bi bi-envelope"></i> Bergabung dengan Paloma di Linktree
+          </a>
+        </div>
+      </div>
+
+      <div id="shopSection" style="display: none">
+        <!-- Shoppable Posts Carousel -->
+        <p class="affiliate-note">Products may contain affiliate links</p>
+
+        <div class="shoppable-carousel-container">
+          <p>Shoppable Posts</p>
+
+          <button class="shoppable-prev-btn">
+            <img src="">
+          </button>
+
+          <div class="shoppable-carousel">
+            <!-- Card 1 -->
+            <div class="shoppable-card">
+              <div class="shoppable-items">
+                <img src="icon1.jpg" />
+                <img src="icon2.jpg" />
+                <img src="icon3.jpg" />
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="shoppable-card">
+              <div class="shoppable-items">
+                <img src="icon4.jpg" />
+                <img src="icon5.jpg" />
+                <img src="icon6.jpg" />
+              </div>
+            </div>
+            <div class="shoppable-card">
+              <div class="shoppable-items">
+                <img src="icon4.jpg" />
+                <img src="icon5.jpg" />
+                <img src="icon6.jpg" />
+              </div>
+            </div>
+            <div class="shoppable-card">
+              <div class="shoppable-items">
+                <img src="icon4.jpg" />
+                <img src="icon5.jpg" />
+                <img src="icon6.jpg" />
+              </div>
+            </div>
+            <div class="shoppable-card">
+                <div class="shoppable-items">
+                  <img src="icon4.jpg" />
+                  <img src="icon5.jpg" />
+                  <img src="icon6.jpg" />
+                </div>
+            </div>
+            <div class="shoppable-card">
+                <div class="shoppable-items">
+                  <img src="icon4.jpg" />
+                  <img src="icon5.jpg" />
+                  <img src="icon6.jpg" />
+                </div>
+            </div>
+            <div class="shoppable-card">
+                <div class="shoppable-items">
+                  <img src="icon4.jpg" />
+                  <img src="icon5.jpg" />
+                  <img src="icon6.jpg" />
+                </div>
+            </div>
+          </div>
+
+          <button class="shoppable-next-btn">
+            <img scr="">
+          </button>
+        </div>
+
+        <!-- My Products-->
+        <p>My Products</p>
+        <div class="shop-section p-3 rounded-5 mt-2">
+            <div class="d-flex justify-content-between">
+              <img
+                src="./image/product1.jpg"
+                alt="Product 1"
+                class="img-fluid product-img"
+              />
+              <img
+                src="./image/product2.jpg"
+                alt="Product 2"
+                class="img-fluid product-img"
+              />
+              <img
+                src="./image/product3.jpg"
+                alt="Product 3"
+                class="img-fluid product-img"
+              />
+            </div>
+            <p class="mt-2 text-white">
+              See Full Shop <br /><small class="thin-text">70 Products</small>
+            </p>
+          </div>
+
+        <!-- Produk 1 -->
+        <div class="shop-section p-3 rounded-5 mt-2">
+          <div class="d-flex justify-content-between">
+            <img
+              src="./image/product1.jpg"
+              alt="Product 1"
+              class="img-fluid product-img"
+            />
+            <img
+              src="./image/product2.jpg"
+              alt="Product 2"
+              class="img-fluid product-img"
+            />
+            <img
+              src="./image/product3.jpg"
+              alt="Product 3"
+              class="img-fluid product-img"
+            />
+          </div>
+          <p class="mt-2 text-white">
+            See Full Shop <br /><small class="thin-text">70 Products</small>
+          </p>
+        </div>
+
+        <!-- Produk 2-->
+        <div class="shop-section p-3 rounded-5 mt-2">
+          <div class="d-flex justify-content-between">
+            <img
+              src="./image/product1.jpg"
+              alt="Product 1"
+              class="img-fluid product-img"
+            />
+            <img
+              src="./image/product2.jpg"
+              alt="Product 2"
+              class="img-fluid product-img"
+            />
+            <img
+              src="./image/product3.jpg"
+              alt="Product 3"
+              class="img-fluid product-img"
+            />
+          </div>
+          <p class="mt-2 text-white">
+            See Full Shop <br /><small class="thin-text">70 Products</small>
+          </p>
+        </div>
+
+        <!-- Produk 3-->
+        <div class="shop-section p-3 rounded-5 mt-2">
+          <div class="d-flex justify-content-between">
+            <img
+              src="./image/product1.jpg"
+              alt="Product 1"
+              class="img-fluid product-img"
+            />
+            <img
+              src="./image/product2.jpg"
+              alt="Product 2"
+              class="img-fluid product-img"
+            />
+            <img
+              src="./image/product3.jpg"
+              alt="Product 3"
+              class="img-fluid product-img"
+            />
+          </div>
+          <p class="mt-2 text-white">
+            See Full Shop <br /><small class="thin-text">70 Products</small>
+          </p>
+        </div>
+
+        <!-- Produk 4-->
+        <div class="shop-section p-3 rounded-5 mt-2">
+          <div class="d-flex justify-content-between">
+            <img
+              src="./image/product1.jpg"
+              alt="Product 1"
+              class="img-fluid product-img"
+            />
+            <img
+              src="./image/product2.jpg"
+              alt="Product 2"
+              class="img-fluid product-img"
+            />
+            <img
+              src="./image/product3.jpg"
+              alt="Product 3"
+              class="img-fluid product-img"
+            />
+          </div>
+          <p class="mt-2 text-white">
+            See Full Shop <br /><small class="thin-text">70 Products</small>
+          </p>
+        </div>
+
+        <!-- Produk 5-->
+        <div class="shop-section p-3 rounded-5 mt-2">
+          <div class="d-flex justify-content-between">
+            <img
+              src="./image/product1.jpg"
+              alt="Product 1"
+              class="img-fluid product-img"
+            />
+            <img
+              src="./image/product2.jpg"
+              alt="Product 2"
+              class="img-fluid product-img"
+            />
+            <img
+              src="./image/product3.jpg"
+              alt="Product 3"
+              class="img-fluid product-img"
+            />
+          </div>
+          <p class="mt-2 text-white">
+            See Full Shop <br /><small class="thin-text">70 Products</small>
+          </p>
+        </div>
+
+        <!--Bergabung di Linktree-->
+        <div class="mt-4 mb-5 d-flex justify-content-center follow-linktree">
+          <a href="mailto:contact@example.com" class="btn w-75">
+            <i class="bi bi-envelope"></i> Bergabung dengan Paloma di Linktree
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script>
+      const btnLinks = document.getElementById("btnLinks");
+      const btnShop = document.getElementById("btnShop");
+      const linksSection = document.getElementById("linksSection");
+      const shopSection = document.getElementById("shopSection");
+      const slider = document.querySelector(".slider");
+
+      const toggleButtons = document.querySelectorAll(".toggle-btn");
+
+      toggleButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          // Update aktif button
+          toggleButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          // Geser slider
+          if (btn.id === "btnLinks") {
+            slider.style.transform = "translateX(0%)";
+            linksSection.style.display = "block";
+            shopSection.style.display = "none";
+          } else {
+            slider.style.transform = "translateX(100%)";
+            linksSection.style.display = "none";
+            shopSection.style.display = "block";
+          }
+        });
+      });
+
+      const carousel = document.querySelector(".shoppable-carousel");
+      const prevBtn = document.querySelector(".shoppable-prev-btn");
+      const nextBtn = document.querySelector(".shoppable-next-btn");
+
+      prevBtn.addEventListener("click", () => {
+        carousel.scrollBy({ left: -350, behavior: "smooth" });
+      });
+
+      nextBtn.addEventListener("click", () => {
+        carousel.scrollBy({ left: 350, behavior: "smooth" });
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
